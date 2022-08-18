@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 from random import sample
 from typing import Callable, Dict, List
 from fastapi import WebSocket
@@ -29,6 +30,8 @@ class User:
     @classmethod
     def add_msg(self, msg: MessageEvent):
         self.history.append(msg)
+        with Path("output.log").open("a+", encoding="utf8") as f:
+            f.write(msg.json(ensure_ascii=False) + "\n")
 
     @classmethod
     def dealer(self, event: Event):
